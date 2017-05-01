@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+    <h:head>
+        <h:outputStylesheet name="css/styles.css" />
+        <title>Create Dish and Restaurant</title>
+    </h:head>
+
+    <h:body>
+        <h1>Dishes database view</h1>
+        <h:form>
+            <p:fieldset legend="All dishes" toggleable="true" style="width: 50%">
+                <p:dataTable value="#{requestUseCaseControllerJPA.getAllDishes()}" var="dish">
+                    <p:column headerText="Dish">
+                        <h:outputText value="#{dish.name}" />
+                    </p:column>
+                    <p:column headerText="Restaurant">
+                        <h:outputText value="#{dish.restaurant.name} " />
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+
+            <h2>Create new dish and restaurant</h2>
+            <table>
+                <tr>
+                    <td>
+                        <h:panelGrid columns="3">
+                            <p:outputLabel for="dishName" value="Dish name"/>
+                            <p:inputText id="dishName" required="true" value="#{requestUseCaseControllerJPA.dish.name}"/>
+                            <p:message for="dishName"/>
+                        </h:panelGrid>
+                    </td>
+                    <td>
+                        <h:panelGrid columns="3">
+                            <p:outputLabel for="restaurantName" value="Restaurant name"/>
+                            <p:inputText id="restaurantName" required="true" value="#{requestUseCaseControllerJPA.restaurant.name}"/>
+                            <p:message for="restaurantName"/>
+                        </h:panelGrid>
+                    </td>
+                </tr>
+            </table>
+
+            <p:commandButton value="Create dish and restaurant"
+                             actionListener="#{requestUseCaseControllerJPA.createDishRestaurant()}"
+                             ajax="false"/>
+
+            <p:messages globalOnly="true"/>
+        </h:form>
+
+    </h:body>
+</html>
+

@@ -7,6 +7,7 @@ import lombok.ToString;
 import lt.vu.entities.Student;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +15,15 @@ import java.util.List;
 @Table(name = "restaurant")
 @Getter
 @Setter
-@EqualsAndHashCode(of = "name")
-@ToString(of = {"name"})
+@EqualsAndHashCode(of = "id")
+@ToString(of = {"id", "name"})
 public class Restaurant {
     @Id
-    @Column(name = "name")
+    @SequenceGenerator(name="restaurant_id_seq", sequenceName="restaurant_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="restaurant_id_seq")
+    private Long id;
+
+    @Size(min = 3, max = 16)
     private String name;
 
     @OneToMany(mappedBy = "restaurant")

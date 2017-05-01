@@ -2,10 +2,10 @@ package lt.vu.usecases.cdi.simple;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import lt.vu.entities.Course;
-import lt.vu.entities.Student;
-import lt.vu.usecases.cdi.dao.CourseDAO;
-import lt.vu.usecases.cdi.dao.StudentDAO;
+import lt.vu.entities.Dish;
+import lt.vu.entities.Restaurant;
+import lt.vu.usecases.cdi.dao.DishDAO;
+import lt.vu.usecases.cdi.dao.RestaurantDAO;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -17,25 +17,25 @@ import java.util.List;
 public class RequestUseCaseControllerJPA {
 
     @Getter
-    private Course course = new Course();
+    private Dish dish = new Dish();
     @Getter
-    private Student student = new Student();
+    private Restaurant restaurant = new Restaurant();
 
     @Inject
-    private CourseDAO courseDAO;
+    private DishDAO dishDAO;
     @Inject
-    private StudentDAO studentDAO;
+    private RestaurantDAO restaurantDAO;
 
     @Transactional
-    public void createCourseStudent() {
-        student.getCourseList().add(course);
-        course.getStudentList().add(student);
-        courseDAO.create(course);
-        studentDAO.create(student);
+    public void createDishRestaurant() {
+        dish.setRestaurant(restaurant);
+        restaurant.getDishList().add(dish);
+        restaurantDAO.create(restaurant);
+        dishDAO.create(dish);
         log.info("Maybe OK...");
     }
 
-    public List<Student> getAllStudents() {
-        return studentDAO.getAllStudents();
+    public List<Dish> getAllDishes() {
+        return dishDAO.getAllDishes();
     }
 }

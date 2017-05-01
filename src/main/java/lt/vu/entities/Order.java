@@ -17,9 +17,11 @@ import java.util.List;
 @ToString(of = {"id", "customer"})
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="order_id_seq", sequenceName="order_id_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="order_id_seq")
     private Long id;
 
+    @JoinColumn(name = "customer", referencedColumnName = "id")
     @ManyToOne
     private Customer customer;
 
