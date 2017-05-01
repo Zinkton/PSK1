@@ -2,12 +2,8 @@ package lt.vu.usecases.cdi.simple;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import lt.vu.usecases.mybatis.dao.CourseMapper;
-import lt.vu.usecases.mybatis.dao.StudentCourseMapper;
-import lt.vu.usecases.mybatis.dao.StudentMapper;
-import lt.vu.usecases.mybatis.model.Course;
-import lt.vu.usecases.mybatis.model.Student;
-import lt.vu.usecases.mybatis.model.StudentCourse;
+import lt.vu.usecases.mybatis.dao.*;
+import lt.vu.usecases.mybatis.model.*;
 
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
@@ -19,29 +15,41 @@ import java.util.List;
 public class RequestUseCaseControllerMyBatis {
 
     @Getter
-    private Course course = new Course();
+    private Dish dish = new Dish();
     @Getter
-    private Student student = new Student();
+    private Order order = new Order();
+    @Getter
+    private Customer customer = new Customer();
+    @Getter
+    private Restaurant restaurant = new Restaurant();
 
     @Inject
-    private StudentMapper studentMapper;
+    private DishMapper dishMapper;
     @Inject
-    private CourseMapper courseMapper;
+    private OrderMapper orderMapper;
     @Inject
-    private StudentCourseMapper studentCourseMapper;
+    private CustomerMapper customerMapper;
+    @Inject
+    private RestaurantMapper restaurantMapper;
+    @Inject
+    private OrdersDishesMapper ordersDishesMapper;
 
-    public List<lt.vu.usecases.mybatis.model.Student> getAllStudents() {
-        return studentMapper.selectAll();
+    public List<Order> getAllOrders() {
+        return orderMapper.selectAll();
     }
 
     @Transactional
-    public void createCourseStudent() {
-        courseMapper.insert(course);
-        studentMapper.insert(student);
-        StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setCourseId(course.getId());
-        studentCourse.setStudentId(student.getId());
-        studentCourseMapper.insert(studentCourse);
+    public void createOrderCustomer() {
+        restaurantMapper.insert(restaurant);
+        dish.setRestaurant(restaurant.getId());
+        dishMapper.insert(dish);
+        customerMapper.insert(customer);
+        order.setCustomer(customer.getId());
+        orderMapper.insert(order);
+        OrdersDishes ordersDishes = new OrdersDishes();
+        ordersDishes.setDishId(dish.getId());
+        ordersDishes.setOrderId(order.getId());
+        ordersDishesMapper.insert(ordersDishes);
         log.info("Maybe OK...");
     }
 }

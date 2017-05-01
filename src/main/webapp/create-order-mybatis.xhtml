@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+    <h:head>
+        <h:outputStylesheet name="css/styles.css" />
+        <title>Create Dish and Restaurant and Dish (MyBatis)</title>
+    </h:head>
+
+    <h:body>
+        <h1>Dishes database view (MyBatis)</h1>
+        <h:form>
+            <p:fieldset legend="All orders" toggleable="true" style="width: 50%">
+                <p:dataTable value="#{requestUseCaseControllerMyBatis.getAllOrders()}" var="order">
+                    <p:column headerText="Order">
+                        <h:outputText value="#{order.id}" />
+                    </p:column>
+                    <p:column headerText="Customer">
+                        <h:outputText value="#{order.customer.name}" />
+                    </p:column>
+                    <p:column headerText="Dishes">
+                        <ui:repeat var="dish" value="#{order.dishes}">
+                            <h:outputText value="#{dish.name} " />
+                        </ui:repeat>
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+
+            <h2>Create new order and customer</h2>
+            <table>
+                <tr>
+                    <td>
+                        <h:panelGrid columns="3">
+                            <p:outputLabel for="customerName" value="Customer name"/>
+                            <p:inputText id="customerName" value="#{requestUseCaseControllerMyBatis.customer.name}" required="true"/>
+                            <p:message for="customerName"/>
+                        </h:panelGrid>
+                    </td>
+                    <td>
+                        <h:panelGrid columns="3">
+                            <p:outputLabel for="dishName" value="Dish name"/>
+                            <p:inputText id="dishName" value="#{requestUseCaseControllerMyBatis.dish.name}" required="true"/>
+                            <p:message for="dishName"/>
+                        </h:panelGrid>
+                    </td>
+                    <td>
+                        <h:panelGrid columns="3">
+                            <p:outputLabel for="restaurantName" value="Restaurant name"/>
+                            <p:inputText id="restaurantName" value="#{requestUseCaseControllerMyBatis.restaurant.name}" required="true"/>
+                            <p:message for="restaurantName"/>
+                        </h:panelGrid>
+                    </td>
+                </tr>
+            </table>
+
+            <p:commandButton value="Create order, customer, dish and restaurant"
+                             actionListener="#{requestUseCaseControllerMyBatis.createOrderCustomer()}"
+                             ajax="false"/>
+
+            <p:messages globalOnly="true"/>
+        </h:form>
+
+    </h:body>
+</html>
+

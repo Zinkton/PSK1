@@ -25,10 +25,10 @@
             <generatedKey column="id" identity="true" sqlStatement="JDBC" />
         </table>
         <table schema="public" tableName="restaurant">
-            <generatedKey column="name" identity="true" sqlStatement="JDBC" />
+            <generatedKey column="id" identity="true" sqlStatement="JDBC" />
         </table>
         <table schema="public" tableName="dish">
-            <generatedKey column="name" identity="true" sqlStatement="JDBC" />
+            <generatedKey column="id" identity="true" sqlStatement="JDBC" />
         </table>
         <table schema="public" tableName="order">
             <generatedKey column="id" identity="true" sqlStatement="JDBC" />
