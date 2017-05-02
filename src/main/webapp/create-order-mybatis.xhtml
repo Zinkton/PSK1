@@ -14,12 +14,12 @@
         <h1>Dishes database view (MyBatis)</h1>
         <h:form>
             <p:fieldset legend="All orders" toggleable="true" style="width: 50%">
-                <p:dataTable value="#{requestUseCaseControllerMyBatis.getAllOrders()}" var="order">
+                <p:dataTable value="#{requestUseCaseControllerMyBatis.allOrders}" var="order">
                     <p:column headerText="Order">
                         <h:outputText value="#{order.id}" />
                     </p:column>
                     <p:column headerText="Customer">
-                        <h:outputText value="#{order.customer.name}" />
+                        <h:outputText value="#{order.customerObj.name}" />
                     </p:column>
                     <p:column headerText="Dishes">
                         <ui:repeat var="dish" value="#{order.dishes}">

@@ -4,7 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lt.vu.entities.Student;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;

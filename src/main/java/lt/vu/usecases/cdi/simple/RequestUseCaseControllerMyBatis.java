@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import lt.vu.usecases.mybatis.dao.*;
 import lt.vu.usecases.mybatis.model.*;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -22,6 +23,13 @@ public class RequestUseCaseControllerMyBatis {
     private Customer customer = new Customer();
     @Getter
     private Restaurant restaurant = new Restaurant();
+    @Getter
+    private List<Order> allOrders;
+
+    @PostConstruct
+    public void init() {
+        loadAllOrders();
+    }
 
     @Inject
     private DishMapper dishMapper;
@@ -34,22 +42,27 @@ public class RequestUseCaseControllerMyBatis {
     @Inject
     private OrdersDishesMapper ordersDishesMapper;
 
-    public List<Order> getAllOrders() {
-        return orderMapper.selectAll();
-    }
-
     @Transactional
     public void createOrderCustomer() {
         restaurantMapper.insert(restaurant);
-        dish.setRestaurant(restaurant.getId());
-        dishMapper.insert(dish);
         customerMapper.insert(customer);
+
         order.setCustomer(customer.getId());
+        dish.setRestaurant(restaurant.getId());
+
+        dishMapper.insert(dish);
         orderMapper.insert(order);
+
         OrdersDishes ordersDishes = new OrdersDishes();
         ordersDishes.setDishId(dish.getId());
         ordersDishes.setOrderId(order.getId());
         ordersDishesMapper.insert(ordersDishes);
+
         log.info("Maybe OK...");
+        //log.info(allOrders.get(0).getCustomer() + "");
+    }
+
+    private void loadAllOrders() {
+        allOrders = orderMapper.selectAll();
     }
 }
