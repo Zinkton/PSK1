@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>lt.vu.mif</groupId>
-    <artifactId>JavaEEstarter</artifactId>
+    <artifactId>PSK1</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>Java EE starter</name>
+    <name>PSK Lab 1</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
