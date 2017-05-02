@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lt.vu.usecases.mybatis.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="lt.vu.usecases.mybatis.model.Order">
+
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="customer" jdbcType="INTEGER" property="customer" />
+
+    <association property="customerObj" resultMap="lt.vu.usecases.mybatis.dao.CustomerMapper.BaseResultMap"
+                 columnPrefix="customerObj_"/>
+
+    <collection property="dishes" javaType="ArrayList" column="id" ofType="Dish" select="selectDishForOrder"/>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from public.order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="lt.vu.usecases.mybatis.model.Order" useGeneratedKeys="true">
+
+    insert into public.order (customer)
+    values (#{customer,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="lt.vu.usecases.mybatis.model.Order">
+
+    update public.order
+    set customer = #{customer,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+
+    select id, customer
+    from public.order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+      o.id,
+      o.customer,
+      c.name as customerObj_name
+    from "public"."order" o
+      LEFT join "public".customer c on o.customer = c.id
+  </select>
+
+  <select id="selectDishForOrder" resultType="Dish">
+    SELECT
+      d.id,
+      d.name,
+      d.restaurant
+    FROM "public".dish d
+      JOIN "public".orders_dishes od on d.id = od.dish_id
+    WHERE od.order_id = #{id,jdbcType=INTEGER}
+  </select>
+</mapper>

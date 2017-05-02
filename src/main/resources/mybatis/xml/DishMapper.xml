@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lt.vu.usecases.mybatis.dao.DishMapper">
+  <resultMap id="BaseResultMap" type="lt.vu.usecases.mybatis.model.Dish">
+
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="restaurant" jdbcType="INTEGER" property="restaurant" />
+    
+    <association property="restaurantObj" resultMap="lt.vu.usecases.mybatis.dao.RestaurantMapper.BaseResultMap"
+                 columnPrefix="restaurantObj_"/>
+
+    <collection property="orders" javaType="ArrayList" column="id" ofType="Order" select="selectOrdersForDish"/>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+
+    delete from public.dish
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="lt.vu.usecases.mybatis.model.Dish" useGeneratedKeys="true">
+
+    insert into public.dish (name, restaurant)
+    values (#{name,jdbcType=VARCHAR}, #{restaurant,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="lt.vu.usecases.mybatis.model.Dish">
+
+    update public.dish
+    set name = #{name,jdbcType=VARCHAR},
+      restaurant = #{restaurant,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+
+    select id, name, restaurant
+    from public.dish
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+      d.id,
+      d.name,
+      d.restaurant,
+      r.name as restaurantObj_name
+    from "public".dish d
+      LEFT join "public".restaurant r on d.restaurant = r.id
+  </select>
+
+  <select id="selectOrdersForDish" resultType="Order">
+    select
+      o.id,
+      o.customer
+    from "public"."order" o
+      join "public".orders_dishes od on o.id = od.order_id
+    where od.dish_id = #{id,jdbcType=INTEGER}
+  </select>
+</mapper>
